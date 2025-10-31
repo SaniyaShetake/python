@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="w3-center">🐾 Available Pets</h2>
+
+<style>
+  .pet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    margin-top: 20px;
+  }
+
+  .pet-card {
+    width: 250px;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .pet-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
+
+  .pet-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+
+  .pet-card img:hover {
+    opacity: 0.85;
+  }
+
+  .pet-info {
+    padding: 10px 15px;
+    background: #fff;
+  }
+
+  .pet-info h4 {
+    margin: 5px 0;
+    color: #333;
+  }
+</style>
+
+<div class="pet-grid">
+  {% for pet in pets %}
+  <div class="w3-card-4 pet-card">
+    <img src="{{ pet.PhotoURL }}" alt="{{ pet.name }}">
+    <div class="pet-info">
+      <h4>{{ pet.name }}</h4>
+      <p>Type: {{ pet.type }}</p>
+      <p>Status:
+        {% if pet.Status == 'Available' %}
+          <span class="w3-text-green">{{ pet.Status }}</span>
+        {% else %}
+          <span class="w3-text-red">{{ pet.Status }}</span>
+        {% endif %}
+      </p>
+
+      <!-- Buttons -->
+      <div class="w3-center" style="margin-top:10px;">
+         <a href="{{ url_for('pet_detail', pet_index=loop.index0) }}" class="w3-button w3-blue w3-margin-bottom">Details</a>
+        {% if pet.Status == 'Available' %}
+          <a href="{{ url_for('adopt_pet', pet_index=loop.index0) }}" class="w3-button w3-green w3-small">Adopt</a>
+        {% else %}
+          <button class="w3-button w3-gray w3-small" disabled>Adopted</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

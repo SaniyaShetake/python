@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pet Adoption Portal</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .pet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            justify-items: center;
+            margin-top: 20px;
+        }
+
+        .pet-card {
+            width: 250px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pet-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .pet-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .pet-card img:hover {
+            opacity: 0.85;
+        }
+
+        .pet-info {
+            padding: 10px 15px;
+            background: #fff;
+        }
+
+        .pet-info h4 {
+            margin: 5px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="w3-bar w3-blue">
+        {% if session.get('user') == 'user' %}
+            <a href="{{ url_for('available_pets') }}" class="w3-bar-item w3-button">Available Pets</a>
+            <a href="{{ url_for('adopted_pets') }}" class="w3-bar-item w3-button">Adopted Pets</a>
+        {% elif session.get('user') == 'admin' %}
+  <a href="{{ url_for('available_pets') }}" class="w3-bar-item w3-button">Available Pets</a>
+              <a href="{{ url_for('adopted_pets') }}" class="w3-bar-item w3-button">Adopted Pets</a>
+            <a href="{{ url_for('admin_requests') }}" class="w3-bar-item w3-button">Requests</a>
+        {% endif %}
+        {% if session.get('user') %}
+            <a href="{{ url_for('logout') }}" class="w3-bar-item w3-button w3-right">Logout</a>
+        {% endif %}
+    </div>
+
+    <div class="w3-container" style="margin-top:20px;">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="w3-panel w3-green w3-round">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h2 class="w3-center">Admin Dashboard</h2>
+
+<h3>🐾 Adoption Requests</h3>
+{% if requests %}
+<table class="w3-table w3-striped w3-bordered w3-hoverable">
+    <tr>
+        <th>Pet</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Place</th>
+        <th>Date/Time</th>
+        <th>Action</th>
+    </tr>
+    {% for req in requests %}
+    <tr>
+        <td>{{ pets[req.pet_index].name }}</td>
+        <td>{{ req.name }}</td>
+        <td>{{ req.email }}</td>
+        <td>{{ req.phone }}</td>
+        <td>{{ req.place }}</td>
+        <td>{{ req.date }}</td>
+        <td>
+            <a href="{{ url_for('approve_request', req_index=loop.index0) }}" class="w3-button w3-green w3-small">Approve</a>
+            <a href="{{ url_for('reject_request', req_index=loop.index0) }}" class="w3-button w3-red w3-small">Reject</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No adoption requests at the moment.</p>
+{% endif %}
+{% endblock %}

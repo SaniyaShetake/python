@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="w3-center">Adopt {{ pet.name }}</h2>
+
+<div class="w3-card-4 w3-padding w3-light-gray" style="max-width:500px; margin:auto;">
+    <form method="POST">
+        <p><input class="w3-input" type="text" name="name" placeholder="Full Name" required></p>
+        <p><input class="w3-input" type="email" name="email" placeholder="Email" required></p>
+        <p><input class="w3-input" type="text" name="phone" placeholder="Phone" required></p>
+        <p><input class="w3-input" type="text" name="state" placeholder="State"></p>
+        <p><input class="w3-input" type="text" name="place" placeholder="Place"></p>
+        <p><input class="w3-input" type="text" name="tal" placeholder="Taluka"></p>
+        <p><input class="w3-input" type="text" name="district" placeholder="District"></p>
+
+        <!-- 👇 Added Date and Time inputs -->
+        <p><label><b>Preferred Adoption Date:</b></label>
+        <input class="w3-input" type="date" name="adoption_date" required></p>
+
+        <p><label><b>Preferred Adoption Time:</b></label>
+        <input class="w3-input" type="time" name="adoption_time" required></p>
+
+        <p><button class="w3-button w3-green w3-block">Submit Request</button></p>
+    </form>
+    <p class="w3-center"><a href="{{ url_for('available_pets') }}">Back</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="w3-center w3-margin-top">🐾 Adoption Requests</h2>
+
+{% if requests %}
+<div class="w3-container w3-margin-top">
+    {% for req in requests %}
+        {% set pet_index = req.get('pet_index') %}
+        {% if pet_index is not none and pet_index|int < pets|length %}
+            {% set pet = pets[pet_index|int] %}
+            <div class="w3-card w3-margin w3-padding w3-white w3-round-large">
+                <div class="w3-row-padding">
+                    <div class="w3-col m4">
+                        <img src="{{ pet['PhotoURL'] }}" alt="{{ pet['name'] }}" 
+                             style="width:100%; border-radius:12px;">
+                    </div>
+                    <div class="w3-col m8">
+                        <h4><b>{{ pet['name'] }}</b> ({{ pet['type'] }})</h4>
+                        <p><strong>Requested by:</strong> {{ req['name'] }} ({{ req['email'] }})</p>
+                        <p><strong>Phone:</strong> {{ req['phone'] }}</p>
+                        <p><strong>Place:</strong> {{ req['place'] }}, {{ req['district'] }}</p>
+                        <p><strong>Status:</strong> {{ req.get('status', 'Pending') }}</p>
+
+                        <!-- Approve/Reject buttons -->
+                        <a href="{{ url_for('approve_request', req_index=loop.index0) }}" 
+                           class="w3-button w3-green w3-round-large w3-margin-right">Approve</a>
+                        <a href="{{ url_for('reject_request', req_index=loop.index0) }}" 
+                           class="w3-button w3-red w3-round-large">Reject</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="w3-text-red">
+                ⚠️ Invalid pet reference in request by {{ req['name'] }}
+            </p>
+        {% endif %}
+    {% endfor %}
+</div>
+{% else %}
+    <p class="w3-center">No adoption requests found.</p>
+{% endif %}
+{% endblock %}

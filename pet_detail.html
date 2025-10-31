@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="w3-center">{{ pet.name or "Unknown Pet" }} Details</h2>
+
+<div class="w3-card-4 w3-padding w3-white w3-margin" style="max-width:600px; margin:auto;">
+    <img src="{{ pet.PhotoURL or pet.primary_photo_cropped or '/static/images/default.jpg' }}"
+         alt="{{ pet.name }}"
+         style="width:100%; height:300px; object-fit:cover; border-radius:8px;">
+
+    <div class="w3-container w3-margin-top">
+        <p><strong>Type:</strong> {{ pet.type or 'Unknown' }}</p>
+        <p><strong>Species:</strong> {{ pet.species or 'Unknown' }}</p>
+
+        {% if pet.breeds %}
+            {% if pet.breeds is string %}
+                <p><strong>Breed:</strong> {{ pet.breeds }}</p>
+            {% elif pet.breeds is mapping %}
+                <p><strong>Breed:</strong> {{ pet.breeds.get('primary', 'Unknown') }}</p>
+            {% else %}
+                <p><strong>Breed:</strong> Unknown</p>
+            {% endif %}
+        {% else %}
+            <p><strong>Breed:</strong> Unknown</p>
+        {% endif %}
+
+        <p><strong>Color:</strong>
+            {% if pet.colors %}
+                {% if pet.colors is string %}
+                    {{ pet.colors }}
+                {% elif pet.colors is mapping %}
+                    {{ pet.colors.primary or 'Unknown' }}
+                {% else %}
+                    Unknown
+                {% endif %}
+            {% else %}
+                Unknown
+            {% endif %}
+        </p>
+
+        <p><strong>Age:</strong> {{ pet.age or 'Unknown' }}</p>
+        <p><strong>Gender:</strong> {{ pet.gender or 'Unknown' }}</p>
+        <p><strong>Size:</strong> {{ pet.size or 'Unknown' }}</p>
+        <p><strong>Coat:</strong> {{ pet.coat or 'Unknown' }}</p>
+
+        {# ✅ Fix: Safely show attributes only if dict-like #}
+        {% if pet.attributes %}
+            <h4>Attributes</h4>
+            {% if pet.attributes is mapping %}
+                <ul>
+                    {% for key, value in pet.attributes.items() %}
+                        <li>{{ key|capitalize }}: {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>{{ pet.attributes }}</p>
+            {% endif %}
+        {% endif %}
+
+        {# ✅ Fix: Safely handle environment #}
+        {% if pet.environment %}
+            <h4>Environment</h4>
+            {% if pet.environment is mapping %}
+                <ul>
+                    {% for key, value in pet.environment.items() %}
+                        <li>{{ key|capitalize }}: {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>{{ pet.environment }}</p>
+            {% endif %}
+        {% endif %}
+
+        {% if pet.tags %}
+            <p><strong>Tags:</strong> {{ pet.tags|join(', ') if pet.tags is iterable else pet.tags }}</p>
+        {% endif %}
+
+        <p><strong>Description:</strong> {{ pet.description or 'No description available.' }}</p>
+
+        <p><strong>Status:</strong> {{ pet.Status or pet.status or 'Unknown' }}</p>
+
+        {% if pet.Status == 'Adopted' and pet.AdoptedBy %}
+            <h4>Adopted By:</h4>
+            <p><strong>Name:</strong> {{ pet.AdoptedBy.name }}</p>
+            <p><strong>Email:</strong> {{ pet.AdoptedBy.email }}</p>
+            <p><strong>Phone:</strong> {{ pet.AdoptedBy.phone }}</p>
+        {% elif pet.Status != 'Adopted' %}
+    <a href="{{ url_for('adopt_pet', pet_index=pet.index) }}" class="w3-button w3-green w3-margin-top">Adopt</a>
+
+
+
+
+
+
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

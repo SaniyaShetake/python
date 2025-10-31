@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Adoption Requests</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Pet</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests %}
+        <tr>
+            <td>{{ req.id }}</td>
+            <td>{{ req.user.username }}</td>
+            <td>{{ req.pet.name }}</td>
+            <td>{{ req.status }}</td>
+            <td>
+                {% if req.status == 'Pending' %}
+                <a href="{{ url_for('approve_request', req_id=req.id) }}" class="btn btn-success btn-sm">Approve</a>
+                <a href="{{ url_for('reject_request', req_id=req.id) }}" class="btn btn-danger btn-sm">Reject</a>
+                {% else %}
+                -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="w3-center w3-margin-top">🐾 Adopted Pets</h2>
+
+{% if pets %}
+<div class="w3-container w3-margin-top">
+  <div class="w3-row-padding" style="display: flex; flex-wrap: wrap; justify-content: center;">
+    {% for pet in pets %}
+      <div class="w3-col l4 m6 s12 w3-margin-bottom" style="display: flex;">
+        <div class="w3-card-4 w3-hover-shadow w3-round-xlarge pet-card" 
+             style="overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; width:100%;">
+          
+          <img src="{{ pet['PhotoURL'] or '/static/images/default.jpg' }}" alt="{{ pet['Name'] }}" 
+               style="width:100%; height:230px; object-fit:cover; border-top-left-radius:16px; border-top-right-radius:16px;">
+
+          <div class="w3-container w3-padding" style="flex-grow:1;">
+            <h4 class="w3-center w3-text-teal">{{ pet['Name'] }}</h4>
+            <p><b>Status:</b> <span class="w3-text-green">{{ pet['Status'] }}</span></p>
+
+            {% if pet.get('AdoptedBy') %}
+              {% set adopter = pet['AdoptedBy'] %}
+              <div class="w3-small w3-margin-top">
+                  <p><b>Adopted By:</b> {{ adopter['name'] }}</p>
+                  <p><b>Email:</b> {{ adopter['email'] }}</p>
+                  <p><b>Phone:</b> {{ adopter['phone'] }}</p>
+                  <p><b>Place:</b> {{ adopter['place'] }}, {{ adopter['tal'] }}, {{ adopter['district'] }}</p>
+                  <p><b>Time:</b> {{ adopter['time'] }}</p>
+                  <p><b>Date:</b> {{ adopter['date'] }}</p>
+              </div>
+            {% else %}
+              <p class="w3-text-grey"><i>No adopter details available</i></p>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+  <p class="w3-center w3-text-grey">No adopted pets found.</p>
+{% endif %}
+
+{% endblock %}

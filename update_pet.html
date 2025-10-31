@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Update Pet - {{ pet['Name'] }}</h3>
+<form method="POST" class="w3-container w3-card w3-padding w3-round">
+    <p><input class="w3-input w3-border" name="name" value="{{ pet['Name'] }}" required></p>
+    <p><input class="w3-input w3-border" name="type" value="{{ pet['Type'] }}" required></p>
+    <p><input class="w3-input w3-border" name="breed" value="{{ pet['Breed'] }}" required></p>
+    <p><input class="w3-input w3-border" name="age" value="{{ pet['Age'] }}" required></p>
+    <p><input class="w3-input w3-border" name="image" value="{{ pet['Image'] }}" required></p>
+    <p><button class="w3-button w3-blue w3-round">Update</button></p>
+</form>
+{% endblock %}
